@@ -23,7 +23,7 @@ function makeBusiness([owner, director = 'Victor', cash, emp]){
 console.log(
 `We have a business. Owner: ${owner}, director: ${director}. Our budget: ${cash}. And our employers: ${emp}
 And we have a sponsors: 
-${eu.concat(rus,  'unexpected sponsor').join(' ')}
+${[...eu, ...rus, 'unexpected sponsor']}
 Note. Be careful with ${eu[0]}. It's a huge risk.`
 );
 
