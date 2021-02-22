@@ -1,32 +1,69 @@
-import React from 'react';
+import React, {Component} from 'react';
 import PostList from '../post-list/post-list';
 
 import './post-list-item.css';
 
-const PostListItem = () => {
-    return (<li className='app-list-item d-flex justify-content-between'>
-                <span className='app-list-item-label'>
-                    Hello World!!!
-                </span>
+export default class PostListItem extends Component{
+    constructor(props){
+        super(props)
+        this.state = {
+            important: false,
+            like: false,
+        }
+    }
 
-                <div className='d-flex justify-content-center align-items-center'>
-                    <button 
-                        className='btn-star btn-sm'
-                        type='button'>
-                            <i className='fa fa-star'></i>
-                    </button>
+    onImportant = () => {
+        this.setState(({important}) => ({
+            important: !important,
+        }));
+    }
 
-                    <button 
-                        className='btn-trash btn-sm'
-                        type='button'>
-                            <i className='fa fa-trash-o'></i>
-                    </button>
+    onLike = () => {
+        this.setState(({like}) => ({
+            like: !like,
+        }));
+    }
 
-                    <i className='fa fa-heart'>
+    render() {
+        let classNames = 'app-list-item d-flex justify-content-between';
 
-                    </i>
-                </div>
-            </li>);
+        const {label} = this.props;
+
+        const {important, like} = this.state;
+
+        if (important){
+            classNames += ' important';
+        };
+
+        if (like){
+            classNames += ' like';
+        };
+    
+        return (<div className={classNames}>
+                    <span 
+                        className='app-list-item-label'
+                        onClick={this.onLike}>
+                        {label}
+                    </span>
+    
+                    <div className='d-flex justify-content-center align-items-center'>
+                        <button 
+                            className='btn-star btn-sm'
+                            type='button'
+                            onClick={this.onImportant}>
+                                <i className='fa fa-star'></i>
+                        </button>
+    
+                        <button 
+                            className='btn-trash btn-sm'
+                            type='button'>
+                                <i className='fa fa-trash-o'></i>
+                        </button>
+    
+                        <i className='fa fa-heart'>
+    
+                        </i>
+                    </div>
+                </div>);
+    }
 };
-
-export default PostListItem;
