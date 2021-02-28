@@ -14,10 +14,10 @@ export default class App extends Component {
 
         this.state = {
             data: [
-                {label: 'Goin to learn React', important: true, id: 1},
-                {label: 'It so fuking good', important: false, id: 2},
-                {label: 'I like this shit', important: false, id: 3},
-                {label: 'I need a break...', important: true, id: 4}
+                {label: 'Goin to learn React', important: false, like: false, id: 1},
+                {label: 'It so fuking good', important: false, like: false, id: 2},
+                {label: 'I like this shit', important: false, like: false, id: 3},
+                {label: 'I need a break...', important: false, like: false, id: 4}
             ]
         }
     }
@@ -36,6 +36,7 @@ export default class App extends Component {
         const newItem = {
             label: itemText,
             important: false,
+            like: false,
             //generating unique id
             id: `f${Date.now().toString(16)}`,
         };
@@ -49,10 +50,55 @@ export default class App extends Component {
         })
     }
 
+    onToggleImportant = (id) => {
+        this.setState(({data}) => {
+            const newData = data.map(item => {
+                const newItem = {...item};
+
+                if (newItem.id === id){
+                    newItem.important = !newItem.important;
+                };
+
+                return newItem;
+            });
+
+            return {
+                data: newData,
+            }
+        });
+    }
+
+    onToggleLike = (id) => {
+        this.setState(({data}) => {
+            const newData = data.map(item => {
+                const newItem = {...item};
+
+                if (newItem.id === id){
+                    newItem.like = !newItem.like;
+                };
+
+                return newItem;
+            });
+
+            return {
+                data: newData,
+            }
+        });
+    }
+
     render(){
+        const {data} = this.state;
+
+        const liked = data.filter(item => item.like)
+                                                                .length;
+
+        const allPosts = data.length;
+
         return (
             <div className='app'>
-                <AppHeader/>
+                <AppHeader
+                    liked={liked}
+                    allPosts={allPosts}/>
     
                 <div className='search-panel d-flex'>
                     <SearchPanel/>
@@ -61,7 +107,9 @@ export default class App extends Component {
     
                 <PostList 
                     posts={this.state.data}
-                    onDelete={this.deleteItem}/>
+                    onDelete={this.deleteItem}
+                    onToggleImportant={this.onToggleImportant}
+                    onToggleLike={this.onToggleLike}/>
     
                 <PostAddForm
                     onAdd={this.addItem}/>
