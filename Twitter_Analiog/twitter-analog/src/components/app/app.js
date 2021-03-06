@@ -6,7 +6,51 @@ import PostStatusFilter from '../post-status-filter';
 import PostList from '../post-list';
 import PostAddForm from '../post-add-form'
 
-import './app.css';
+//Стилизовать приложение можно несколькими способами
+
+//1-Можно подключить библиотеку Resct-strap и bootstrap 4(предположым)
+//с помощью npm. И иапользовать уже готовые стилизированые компоненты которые 
+//они содержат
+
+//2-использовать css модули для стилизации компонентов
+//чтобы react понимал что это модули названия css-файлов нужно 
+//правильно составлять
+//Например App.module.css
+//тогда все стили будут инкапсулированы
+//и не будет конфликтов
+
+//3-CSSinJS
+//Интересная технология которая позволяет писать правила стилей прямо в js файле компонента
+//проект будет переписан на эту технологию максимально
+//ДЛя этого будет использована одна из мньжества библиотек(styled-components)
+
+// import './app.css';
+import styled from 'styled-components';
+
+//Это cssinjs 
+//в таких объектах можго прописывать любую вложеность
+//Например для условного h1
+
+// const StyledApp = styled.div`
+//     margin: 0 auto;
+//     max-width: 800px;
+//     h1{
+//      color: blue;
+//      p{
+//         font-size: ${props.largeSize ? '34px' : '23px'};
+//      }
+//     }
+// `;
+
+const StyledApp = styled.div`
+    margin: 0 auto;
+    max-width: 800px;
+`;
+
+const StyledSearchPanel = styled.div`
+    display: flex;
+    margin: 1rem 0;
+`;
 
 export default class App extends Component {
     constructor(props){
@@ -121,18 +165,25 @@ export default class App extends Component {
         const visiblePosts = this.filterPosts(this.searchPosts(data, term), filterRule);
 
         return (
-            <div className='app'>
+            <StyledApp
+                    //если нам тут в место дива нужен какой то другой html элемент
+                    //(к примеру ссылка 'а')
+                    //мы можем на месте использовать данную конструкцию
+                    //<StyledApp as='a'></StyledApp>
+
+                    //теперь мы получим элемент-ссылку
+                >
                 <AppHeader
                     liked={liked}
                     allPosts={allPosts}/>
     
-                <div className='search-panel d-flex'>
+                <StyledSearchPanel>
                     <SearchPanel
                         onUpdateSearch={this.onUpdateSearch}/>
                     <PostStatusFilter
                         filterRule={filterRule}
                         onFilterSelect={this.onFilterSelect}/> 
-                </div>
+                </StyledSearchPanel>
     
                 <PostList 
                     posts={visiblePosts}
@@ -142,7 +193,7 @@ export default class App extends Component {
     
                 <PostAddForm
                     onAdd={this.addItem}/>
-            </div>
+            </StyledApp>
         );
     }
 };
